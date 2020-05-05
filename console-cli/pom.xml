@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>thumbnail-extract</artifactId>
+        <groupId>com.glqdlt.pm6.thumbnail</groupId>
+        <version>JDK8.0.0.2-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>console-cli</artifactId>
+
+    <developers>
+        <developer>
+            <name>jhun</name>
+            <email>dlfdnd0725@gmail.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/glqdlt/thumnail-extract.git</url>
+    </scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.glqdlt.pm6.thumbnail</groupId>
+            <artifactId>core</artifactId>
+            <version>JDK8.0.0.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+    </dependencies>
+
+</project>

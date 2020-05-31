@@ -24,6 +24,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>info.picocli</groupId>
+            <artifactId>picocli</artifactId>
+            <version>4.3.2</version>
+        </dependency>
+        <dependency>
             <groupId>com.glqdlt.pm6.thumbnail</groupId>
             <artifactId>core</artifactId>
             <version>JDK8.0.0.2-SNAPSHOT</version>

@@ -13,6 +13,12 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class CombineImageToPdf implements PdfCombiner {
 
@@ -71,8 +77,14 @@ public class CombineImageToPdf implements PdfCombiner {
         if (target == null) {
             throw new RuntimeException("target file must set path.");
         }
+        ExecutorService pool = Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors());
         try (PDDocument doc = new PDDocument();) {
 
+            if (target.exists()) {
+                if (defaultFunction.areYouThisItemDelete(target)) {
+                    target.delete();
+                }
+            }
             File[] items = sourceDir.listFiles();
             if (items == null || items.length < 1) {
                 throw new RuntimeException("source directory is empty.");
@@ -81,37 +93,53 @@ public class CombineImageToPdf implements PdfCombiner {
             final int entrySize = items.length;
             logging(String.format("Total images '%s' count.", entrySize));
             int entryPoint = 0;
-            for (File item : items) {
-                logging(String.format("[%.1f%%] loading.. image. '%s' ", calcPercent(entrySize, entryPoint), item.getName()));
+            List<Future> callBacks = new LinkedList<>();
+            PDPage[] queue = new PDPage[entrySize];
+            for (final File item : items) {
+                final int ___i = entryPoint;
+                Future callback = pool.submit(() -> {
+                    try {
+                        BufferedImage _i = ImageIO.read(item);
+                        int width = _i.getWidth();
+                        int height = _i.getHeight();
+                        PDImageXObject imageXObject = JPEGFactory.createFromImage(doc, _i, getQuality(), getDpi());
+                        PDRectangle pageOutFrame = new PDRectangle(width, height);
+
+                        PDPage pdPage = new PDPage(pageOutFrame);
+                        try (PDPageContentStream pdPageContentStream = new PDPageContentStream(doc, pdPage)) {
+                            pdPageContentStream.drawImage(imageXObject, 0, 0, width, height);
+                        }
+                        logging(String.format("[%s/%s] file[%s] ==> loaded",___i+1,entrySize,item.getName()));
+                        queue[___i] = pdPage;
+                        return true;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
                 entryPoint++;
-
-                BufferedImage _i = ImageIO.read(item);
-                int width = _i.getWidth();
-                int height = _i.getHeight();
-                PDImageXObject imageXObject = JPEGFactory.createFromImage(doc, _i, getQuality(), getDpi());
-
-                PDRectangle pageOutFrame = new PDRectangle(width, height);
-
-                PDPage pdPage = new PDPage(pageOutFrame);
-                doc.addPage(pdPage);
-                try (PDPageContentStream pdPageContentStream = new PDPageContentStream(doc, pdPage)) {
-                    pdPageContentStream.drawImage(imageXObject, 0, 0, width, height);
-                }
-                logging("==> loaded");
-
+                callBacks.add(callback);
             }
 
-            if (target.exists()) {
-                if (defaultFunction.areYouThisItemDelete(target)) {
-                    target.delete();
-                }
+            while(true){
+            boolean isDone = callBacks.stream().allMatch(Future::isDone);
+            if(isDone){
+                break;
             }
+            Thread.sleep(TimeUnit.SECONDS.toMillis(2));
+            }
+
+            for(int i = 0; i < queue.length ; i++){
+                doc.addPage(queue[i]);
+            }
+
             logging(String.format("make pdf... '%s'", target.getName()));
             doc.save(target);
             logging("completed.");
             return target;
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
+        }finally {
+            pool.shutdown();
         }
     }
 

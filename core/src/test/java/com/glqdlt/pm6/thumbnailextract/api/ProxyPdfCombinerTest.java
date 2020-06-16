@@ -11,6 +11,10 @@ import java.util.function.Consumer;
 public class ProxyPdfCombinerTest {
 
 
+    /**
+     * @see <a href='https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Proxy.html'>https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Proxy.html</a>
+     * @param <T> 프록시 대상 인스턴스
+     */
     public static class PrePostProxyInvocationHandler<T> implements InvocationHandler {
         private T origin;
         private Consumer<T> preCallBack;

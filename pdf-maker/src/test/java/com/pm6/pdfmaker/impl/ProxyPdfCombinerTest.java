@@ -1,6 +1,7 @@
 package com.pm6.pdfmaker.impl;
 
-import com.pm6.pdfmaker.api.PdfMaker;
+import com.pm6.pdfmaker.MultiThreadPdfMaker;
+import com.pm6.pdfmaker.PdfMaker;
 import org.junit.Test;
 
 import java.lang.reflect.InvocationHandler;

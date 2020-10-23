@@ -1,6 +1,5 @@
-package com.pm6.pdfmaker.impl;
+package com.pm6.pdfmaker;
 
-import com.pm6.pdfmaker.api.PdfMaker;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;

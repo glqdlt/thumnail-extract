@@ -1,4 +1,4 @@
-package com.pm6.pdfmaker.api;
+package com.pm6.pdfmaker;
 
 import java.io.File;
 

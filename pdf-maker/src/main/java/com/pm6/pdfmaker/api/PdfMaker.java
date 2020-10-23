@@ -1,8 +1,8 @@
-package com.glqdlt.pm6.thumbnailextract.api;
+package com.pm6.pdfmaker.api;
 
 import java.io.File;
 
-public interface PdfCombiner {
+public interface PdfMaker {
 
     File combineToImages(File sourceDir);
 

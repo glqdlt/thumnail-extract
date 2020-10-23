@@ -1,6 +1,6 @@
-package com.glqdlt.pm6.thumbnailextract.api;
+package com.pm6.pdfmaker.impl;
 
-import com.glqdlt.pm6.thumbnailextract.impl.CombineImageToPdf;
+import com.pm6.pdfmaker.api.PdfMaker;
 import org.junit.Test;
 
 import java.lang.reflect.InvocationHandler;
@@ -43,11 +43,11 @@ public class ProxyPdfCombinerTest {
     @Test
     public void name() {
 
-        PdfCombiner pdfCombiner = new CombineImageToPdf();
-        PdfCombiner asd = (PdfCombiner) Proxy
+        PdfMaker pdfCombiner = new MultiThreadPdfMaker();
+        PdfMaker asd = (PdfMaker) Proxy
                 .newProxyInstance(
                         pdfCombiner.getClass().getClassLoader(),
-                        new Class[]{PdfCombiner.class},
+                        new Class[]{PdfMaker.class},
                         new PrePostProxyInvocationHandler<>(pdfCombiner, (x) -> {
                             System.out.println("pre:"+x.getClass().getTypeName());
                         }, (x) -> {

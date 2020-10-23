@@ -1,13 +1,14 @@
-package com.glqdlt.pm6.thumbnailextract.impl;
+package com.pm6.pdfmaker.impl;
 
-import com.glqdlt.pm6.thumbnailextract.api.PdfCombiner;
-import com.glqdlt.pm6.thumbnailextract.api.UserDeleteFunction;
+import com.pm6.pdfmaker.api.PdfMaker;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -20,25 +21,25 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class CombineImageToPdf implements PdfCombiner {
+public class MultiThreadPdfMaker implements PdfMaker {
 
+    private final static Logger logger = LoggerFactory.getLogger(MultiThreadPdfMaker.class);
 
     public void logging(String message) {
-        System.out.println(message);
+        logger.info(message);
+    }
+
+    public MultiThreadPdfMaker() {
+    }
+
+    public MultiThreadPdfMaker(Integer dpi, Float quality) {
+        this.dpi = dpi;
+        this.quality = quality;
     }
 
     private Integer dpi = 300;
-    private Integer quality = 1;
+    private Float quality = 1F;
     private Boolean forceDelete = true;
-    private UserDeleteFunction defaultFunction = (f) -> {
-        logging(String.format("'%s' is exists.", f.getName()));
-        if (getForceDelete()) {
-            logging(String.format("try delete, '%s'", f.getName()));
-            return true;
-        }
-        logging("not delete item");
-        return false;
-    };
 
     public Boolean getForceDelete() {
         return forceDelete;
@@ -56,11 +57,11 @@ public class CombineImageToPdf implements PdfCombiner {
         this.dpi = dpi;
     }
 
-    public Integer getQuality() {
+    public Float getQuality() {
         return quality;
     }
 
-    public void setQuality(Integer quality) {
+    public void setQuality(Float quality) {
         this.quality = quality;
     }
 
@@ -80,11 +81,6 @@ public class CombineImageToPdf implements PdfCombiner {
         ExecutorService pool = Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors());
         try (PDDocument doc = new PDDocument();) {
 
-            if (target.exists()) {
-                if (defaultFunction.areYouThisItemDelete(target)) {
-                    target.delete();
-                }
-            }
             File[] items = sourceDir.listFiles();
             if (items == null || items.length < 1) {
                 throw new RuntimeException("source directory is empty.");

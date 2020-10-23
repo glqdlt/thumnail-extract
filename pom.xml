@@ -12,6 +12,7 @@
     <modules>
         <module>core</module>
         <module>console-cli</module>
+        <module>pdf-maker</module>
     </modules>
 
     <developers>

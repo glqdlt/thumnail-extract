@@ -21,6 +21,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author glqdlt
+ * 2020-10-23
+ */
 public class MultiThreadPdfMaker implements PdfMaker {
 
     private final static Logger logger = LoggerFactory.getLogger(MultiThreadPdfMaker.class);

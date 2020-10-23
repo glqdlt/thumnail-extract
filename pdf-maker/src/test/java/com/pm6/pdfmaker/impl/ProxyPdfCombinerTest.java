@@ -7,10 +7,11 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.function.Consumer;
-
+/**
+ * @author glqdlt
+ * 2020-10-23
+ */
 public class ProxyPdfCombinerTest {
-
-
     /**
      * @see <a href='https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Proxy.html'>https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Proxy.html</a>
      * @param <T> 프록시 대상 인스턴스

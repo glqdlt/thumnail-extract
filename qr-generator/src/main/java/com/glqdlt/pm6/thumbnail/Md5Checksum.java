@@ -4,6 +4,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
+import com.glqdlt.pm6.commons.SimpleRuntimeException;
 
 /**
  * @author glqdlt
@@ -18,7 +19,7 @@ public class Md5Checksum implements Checksum{
             return DatatypeConverter
                     .printHexBinary(zxc.digest()).toUpperCase();
         } catch (Throwable e) {
-            throw new RuntimeException(e);
+            throw new SimpleRuntimeException(e);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.glqdlt.pm6.thumbnailextract.impl;
 
+import com.glqdlt.pm6.commons.SimpleRuntimeException;
 import com.glqdlt.pm6.thumbnailextract.api.PdfCombiner;
 import com.glqdlt.pm6.thumbnailextract.api.UserDeleteFunction;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -69,13 +70,13 @@ public class CombineImageToPdf implements PdfCombiner {
     @Override
     public File combineToImages(File sourceDir, File target) {
         if (target == null) {
-            throw new RuntimeException("target file must set path.");
+            throw new SimpleRuntimeException("target file must set path.");
         }
         try (PDDocument doc = new PDDocument();) {
 
             File[] items = sourceDir.listFiles();
             if (items == null || items.length < 1) {
-                throw new RuntimeException("source directory is empty.");
+                throw new SimpleRuntimeException("source directory is empty.");
             }
 
             final int entrySize = items.length;
@@ -111,7 +112,7 @@ public class CombineImageToPdf implements PdfCombiner {
             logging("completed.");
             return target;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new SimpleRuntimeException(e);
         }
     }
 

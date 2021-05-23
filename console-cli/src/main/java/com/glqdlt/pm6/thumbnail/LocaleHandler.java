@@ -1,5 +1,7 @@
 package com.glqdlt.pm6.thumbnail;
 
+import com.glqdlt.pm6.commons.SimpleRuntimeException;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Locale;
@@ -48,7 +50,7 @@ public class LocaleHandler {
             props.load(rrr);
             return props;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new SimpleRuntimeException(e);
         }
     }
 

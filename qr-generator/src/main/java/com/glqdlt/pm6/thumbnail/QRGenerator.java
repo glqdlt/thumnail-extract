@@ -1,5 +1,6 @@
 package com.glqdlt.pm6.thumbnail;
 
+import com.glqdlt.pm6.commons.SimpleRuntimeException;
 import net.glxn.qrgen.javase.QRCode;
 
 import javax.imageio.ImageIO;
@@ -18,7 +19,7 @@ public class QRGenerator implements Bardcode{
              ByteArrayInputStream bis = new ByteArrayInputStream(stream.toByteArray());){
             return  ImageIO.read(bis);
         } catch (Throwable e) {
-            throw new RuntimeException(e);
+            throw new SimpleRuntimeException(e);
         }
     }
 }

@@ -12,6 +12,7 @@
     <modules>
         <module>core</module>
         <module>console-cli</module>
+        <module>qr-generator</module>
     </modules>
 
     <developers>
